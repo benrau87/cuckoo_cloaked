@@ -98,6 +98,7 @@ cd /home/$name/
 dir=$PWD
 dir_check /home/$name/tools
 dir_check /home/$name/conf
+dir_check /home/$name/Sources
 sed -i 's/interface = ens33/interface = "$interface"/g' $gitdir/conf/routing.conf &>> $logfile
 cp $gitdir/conf/* /home/$name/conf
 cp $gitdir/lib/40-permissions.rules /etc/udev/rules.d/40-permissions.rules
@@ -344,15 +345,49 @@ error_check 'MySQL secure installation and cuckoo database/user creation'
 replace "connection =" "connection = mysql://cuckoo:$cuckoo_mysql_pass@localhost/cuckoo" -- /home/$name/conf/cuckoo.conf &>> $logfile
 error_check 'Configuration files modified'
 
-##Other tools and cloaked VirtualBox
+##Cloaked VirtualBox
 print_status "${YELLOW}Installing VirtualBox${NC}"
-cd /home/$name/
-cd /home/$name/tools/
+cd /home/$name/Sources/
 print_status "${YELLOW}Waiting for dpkg process to free up...${NC}"
 print_status "${YELLOW}If this takes too long try running ${RED}sudo rm -f /var/lib/dpkg/lock${YELLOW} in another terminal window.${NC}"
 while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
    sleep 1
 done
+cd /home/$name/Sources/
+svn co http://www.virtualbox.org/svn/vbox/trunk vbox
+cd vbox/trunk
+find . -name '*VirtualBox*' -exec bash -c 'mv "$0" "${0/VirtualBox/XirtualXox}"' {} \;
+find . -name '*virtualbox*' -exec bash -c 'mv "$0" "${0/virtualbox/xirtualxox}"' {} \;
+find . -type f -name "*" -exec sed -i 's/VirtualBox/XirtualXox/g' {} +
+find . -type f -name "*" -exec sed -i 's/virtualbox/xirtualxox/g' {} +
+find . -type f -name "*" -exec sed -i 's/VIRTUALBOX/XIRTUALXOX/g' {} +
+find . -type f -name "*" -exec sed -i 's/virtualBox/xirtualXox/g' {} +
+find . -name '*Oracle*' -exec bash -c 'mv "$0" "${0/Oracle/Xracle}"' {} \;
+find . -name '*oracle*' -exec bash -c 'mv "$0" "${0/oracle/xracle}"' {} \;
+find . -type f -name "*" -exec sed -i 's/Oracle/Xracle/g' {} +
+find . -type f -name "*" -exec sed -i 's/oracle/xracle/g' {} +
+find . -type f -name "*" -exec sed -i 's/80EE/80EF/g' {} +
+find . -type f -name "*" -exec sed -i 's/80ee/80ef/g' {} +
+sed -i 's/06\/23\/99/07\/24\/13/g' src/VBox/Devices/PC/BIOS/orgs.asm
+find . -name '*vbox*' -exec bash -c 'mv "$0" "${0/vbox/vxox}"' {} \;
+find . -name '*VBox*' -exec bash -c 'mv "$0" "${0/VBox/VXox}"' {} \;
+find . -type f -name "*" -exec sed -i 's/vbox/vxox/g' {} +
+find . -type f -name "*" -exec sed -i 's/VBox/VXox/g' {} +
+find . -type f -name "*" -exec sed -i 's/VBOX/VXOX/g' {} +
+find . -type f -name "*" -exec sed -i 's/Vbox/Vxox/g' {} +
+find . -type f -name "*" -exec sed -i 's/innotek/xnnotek/g' {} +
+find . -type f -name "*" -exec sed -i 's/InnoTek/XnnoTek/g' {} +
+find . -type f -name "*" -exec sed -i 's/INNOTEK/XNNOTEK/g' {} +
+./configure --disable-hardening
+source ./env.sh
+find . -type f -name "*" -exec sed -i 's/QVXoxLayout/QVBoxLayout/g' {} +
+rm kBuild/bin/linux.amd64/kmk_md5sum
+cp $gitdir/lib/kmk_md5sum kBuild/bin/linux.amd64/
+
+git clone https://github.com/jbremer/vboxhardening.git
+
+##Other tools
+cd /home/$name/tools/
 print_status "${YELLOW}Grabbing other tools${NC}"
 install_packages libboost-all-dev
 sudo -H pip install git+https://github.com/buffer/pyv8 &>> $logfile
@@ -361,7 +396,6 @@ print_status "${YELLOW}Installing antivmdetect and tools${NC}"
 dir_check /usr/bin/cd-drive
 ##Antivm download
 git clone https://github.com/benrau87/antivmdetect.git
-git clone https://github.com/jbremer/vboxhardening.git
 error_check 'Antivm tools downloaded'
 
 ##Holding pattern for dpkg...
@@ -375,7 +409,6 @@ done
 print_status "${YELLOW}Setting tcpdump vbox permissions${NC}"
 setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump &>> $logfile
 aa-disable /usr/sbin/tcpdump &>> $logfile
-usermod -a -G vboxusers $name &>> $logfile
 error_check 'Permissions set'
 
 ###Setup of VirtualBox forwarding rules and host only adapter
