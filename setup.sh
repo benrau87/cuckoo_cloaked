@@ -406,6 +406,10 @@ modprobe vxoxnetflt
 modprobe vxoxnetadp
 modprobe vxoxpci
 lsmod | grep vxox
+echo "vxoxdrv"  | sudo tee -a /etc/modules
+echo "vxoxpci"  | sudo tee -a /etc/modules
+echo "vxoxnetadp"  | sudo tee -a /etc/modules
+echo "vxoxnetflt"  | sudo tee -a /etc/modules
 
 
 
