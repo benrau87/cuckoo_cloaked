@@ -422,14 +422,13 @@ echo "netmask         255.255.255.0" | sudo tee -a /etc/network/interfaces
 echo "network         10.1.1.0" | sudo tee -a /etc/network/interfaces
 echo "broadcast       10.1.1.255" | sudo tee -a /etc/network/interfaces
 
-
-
 ##Other tools
 cd /home/$name/tools/
 print_status "${YELLOW}Grabbing other tools${NC}"
 install_packages libboost-all-dev
 sudo -H pip install git+https://github.com/buffer/pyv8 &>> $logfile
 print_status "${YELLOW}Installing antivmdetect and tools${NC}"
+git clone https://github.com/benrau87/antivmdetect.git
 ##Folder setup
 dir_check /usr/bin/cd-drive
 ##Antivm download
