@@ -1,1 +1,4 @@
 #!/bin/bash
+echo $2 >>/home/talos/Sources/vbox/kmk_md5.out    # incase you want to do your own md5sum check later
+echo $2                                               # kmk_md5.out shows you which files are interesting
+echo
