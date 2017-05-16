@@ -105,6 +105,7 @@ cp $gitdir/lib/40-permissions.rules /etc/udev/rules.d/40-permissions.rules
 cp $gitdir/supporting_scripts/firstrun.sh /home/$name/
 chmod +x  $gitdir/supporting_scripts/rooter.sh
 cp $gitdir/supporting_scripts/rooter.sh ~/
+cp $gitdir/supporting_scripts/update_signatures.sh ~/
 chown $name:$name -R /home/$name/conf
 chown $name:$name -R /home/$name/firstrun.sh
 chmod +x /home/$name/firstrun.sh
