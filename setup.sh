@@ -382,9 +382,33 @@ find . -type f -name "*" -exec sed -i 's/INNOTEK/XNNOTEK/g' {} +
 source ./env.sh
 find . -type f -name "*" -exec sed -i 's/QVXoxLayout/QVBoxLayout/g' {} +
 rm kBuild/bin/linux.amd64/kmk_md5sum
+sed -ie "s/talos/$name/g" $gitdir/lib/kmk_md5sum
 cp $gitdir/lib/kmk_md5sum kBuild/bin/linux.amd64/
+chmod +x kBuild/bin/linux.amd64/kmk_md5sum
+kmk
+grep -Rn '0x30, 0x36, 0x2f, 0x32, 0x33, 0x2f, 0x39, 0x39'
+kmk
+cd ./out/linux.amd64/release/bin/src
+make
+sudo rm /lib/modules/4.4.0-53-generic/misc/vxox* 
+sudo make install
+cd ..  /home/$name/Sources/vbox/trunk/out/linux.amd64/release/bin
+rm -rf /usr/local/virtualbox       # if existing
+mkdir /usr/local/virtualbox
+cp -prf * /usr/local/virtualbox/
+rm /usr/lib/VXox*
+cp -prf *.so /usr/lib/
+ln -s /usr/local/virtualbox/XirtualXox /usr/local/bin/VirtualBox
+ln -s /usr/local/virtualbox/VBoxSVC    /usr/local/bin/VBoxSVC
+ln -s /usr/local/virtualbox/VXoxManage  /usr/local/bin/VBoxManage
+modprobe vboxdrv
+modprobe vxoxnetflt
+modprobe vxoxnetadp
+modprobe vxoxpci
+lsmod | grep vxox
 
-git clone https://github.com/jbremer/vboxhardening.git
+
+
 
 ##Other tools
 cd /home/$name/tools/
