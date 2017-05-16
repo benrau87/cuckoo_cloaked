@@ -343,7 +343,7 @@ error_check 'MySQL secure installation and cuckoo database/user creation'
 replace "connection =" "connection = mysql://cuckoo:$cuckoo_mysql_pass@localhost/cuckoo" -- /home/$name/conf/cuckoo.conf &>> $logfile
 error_check 'Configuration files modified'
 
-##Other tools
+##Other tools and cloaked VirtualBox
 cd /home/$name/tools/
 print_status "${YELLOW}Waiting for dpkg process to free up...${NC}"
 print_status "${YELLOW}If this takes too long try running ${RED}sudo rm -f /var/lib/dpkg/lock${YELLOW} in another terminal window.${NC}"
@@ -358,6 +358,7 @@ print_status "${YELLOW}Installing antivmdetect and tools${NC}"
 dir_check /usr/bin/cd-drive
 ##Antivm download
 git clone https://github.com/benrau87/antivmdetect.git
+git clone https://github.com/jbremer/vboxhardening.git
 error_check 'Antivm tools downloaded'
 
 ##Holding pattern for dpkg...
