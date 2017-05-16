@@ -423,6 +423,7 @@ echo "address         10.1.1.254" | sudo tee -a /etc/network/interfaces
 echo "netmask         255.255.255.0" | sudo tee -a /etc/network/interfaces
 echo "network         10.1.1.0" | sudo tee -a /etc/network/interfaces
 echo "broadcast       10.1.1.255" | sudo tee -a /etc/network/interfaces
+error_check 'Virtualbox installed and setup for Cuckoo'
 
 ##Other tools
 cd /home/$name/tools/
