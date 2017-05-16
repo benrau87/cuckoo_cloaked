@@ -410,7 +410,17 @@ echo "vxoxdrv"  | sudo tee -a /etc/modules
 echo "vxoxpci"  | sudo tee -a /etc/modules
 echo "vxoxnetadp"  | sudo tee -a /etc/modules
 echo "vxoxnetflt"  | sudo tee -a /etc/modules
-
+groupadd vboxusers
+usermod -G vboxusers -a $name
+chmod 660 /dev/vxox*
+chgrp vboxusers /dev/vxox*
+VBoxManage hostonlyif create 
+echo "auto vxoxnet0"
+echo "iface vxoxnet0 inet static" | sudo tee -a /etc/network/interfaces
+echo "address         10.1.1.254" | sudo tee -a /etc/network/interfaces
+echo "netmask         255.255.255.0" | sudo tee -a /etc/network/interfaces
+echo "network         10.1.1.0" | sudo tee -a /etc/network/interfaces
+echo "broadcast       10.1.1.255" | sudo tee -a /etc/network/interfaces
 
 
 
