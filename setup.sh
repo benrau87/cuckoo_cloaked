@@ -100,6 +100,7 @@ dir_check /home/$name/tools
 dir_check /home/$name/conf
 sed -i 's/interface = ens33/interface = "$interface"/g' $gitdir/conf/routing.conf &>> $logfile
 cp $gitdir/conf/* /home/$name/conf
+cp $gitdir/lib/40-permissions.rules /etc/udev/rules.d/40-permissions.rules
 cp $gitdir/supporting_scripts/firstrun.sh /home/$name/
 chmod +x  $gitdir/supporting_scripts/rooter.sh
 cp $gitdir/supporting_scripts/rooter.sh ~/
