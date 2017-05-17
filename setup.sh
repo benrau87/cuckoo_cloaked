@@ -173,8 +173,8 @@ while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
    sleep 1
 done
 cd /home/$name/Sources/
-svn co http://www.virtualbox.org/svn/vbox/trunk vbox
-cd vbox/trunk
+svn co http://www.virtualbox.org/svn/vbox vbox
+cd vbox/
 find . -name '*VirtualBox*' -exec bash -c 'mv "$0" "${0/VirtualBox/XirtualXox}"' {} \;
 find . -name '*virtualbox*' -exec bash -c 'mv "$0" "${0/virtualbox/xirtualxox}"' {} \;
 find . -type f -name "*" -exec sed -i 's/VirtualBox/XirtualXox/g' {} +
@@ -211,7 +211,7 @@ cd ./out/linux.amd64/release/bin/src
 make
 sudo rm /lib/modules/4.4.0-53-generic/misc/vxox* 
 sudo make install
-cd ..  /home/$name/Sources/vbox/trunk/out/linux.amd64/release/bin
+cd ..  /home/$name/Sources/vbox/out/linux.amd64/release/bin
 rm -rf /usr/local/virtualbox       # if existing
 mkdir /usr/local/virtualbox
 cp -prf * /usr/local/virtualbox/
