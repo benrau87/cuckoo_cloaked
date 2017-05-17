@@ -193,6 +193,7 @@ PCI80ee=80ef
 
 # Logging some stuff of the installation to...
 vlogfile="$(basename -s ".sh" $0).out"
+exec &> ./$vlogfile
 
 me="$(basename $0)"
 count=0
