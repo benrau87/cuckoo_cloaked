@@ -95,6 +95,7 @@ do
   addr=$(ip -o -4 addr list $iface | awk '{print $4}' | cut -d/ -f1)
   printf "$iface\t$addr\n"
 done
+echo
 echo -e "${YELLOW}What is the name of the interface you wish to route traffic through?(ex: eth0)${NC}"
 read interface
 echo -e "${YELLOW}If you want to use Snort, please type in your Oinkcode, if you do not have it now you will need to append it to /etc/snort/pulledpork.conf in the future, the cron job will take care of updating it.${NC}"
