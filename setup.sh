@@ -213,7 +213,7 @@ me="$(basename $0)"
 count=0
 # Rename files and folders arg1=string in filename to search for, arg2=string to rename filename to
 function rename_files_and_dirs {
-    _echo "[*]Replacing string \"$1\" to \"$2\" in all filenames"
+    print_notification "[*]Replacing string \"$1\" to \"$2\" in all filenames"
     a=0
     false
     while [ $? -ne 0 ]; do a=`expr $a + 1`;
@@ -223,33 +223,32 @@ function rename_files_and_dirs {
 
 function replace_strings {
     count=`expr $count + 1`
-    _echo -n "$count/15 "
-    _echo "[*]Replacing string \"$1\" with string \"$2\" in all files. Be patient this takes a while (~35sec on my box)..."
+    print_notification -n "$count/15 "
+    print_notification "[*]Replacing string \"$1\" with string \"$2\" in all files. Be patient this takes a while (~35sec on my box)..."
     find . -type f ! -name $me ! -name $logfile -exec sed -i "s/$1/$2/g" {} +
 }
 
 
 # ----------- Main ------------
-_echo
-_echo "[*] !!! ---- READ THIS BEFORE PROCEEDING ---- !!!"
-_echo "[*]This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
-_echo "[*]Run this script as the user who is supposed to use the VirtualBox app later"
-_echo "[*]Make sure you are in the vbox source code directory (same where the configure script is)"
-_echo "[*]This script was tested on Ubuntu 16.04.1 LTS - Jan 2017"
-_echo "[*]It comes as it is, it does not do too much error checking etc, if it doesn't work, fix it"
-_echo
-_echo "[*] !!! MAKE SURE YOU HAVE FIXED THE VARIABLES in the header of this script before proceeding (usrname, directories, etc)!!!"
-_echo
+
+print_notification "[*] !!! ---- READ THIS BEFORE PROCEEDING ---- !!!"
+print_notification "[*]This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
+print_notification "[*]Run this script as the user who is supposed to use the VirtualBox app later"
+print_notification "[*]Make sure you are in the vbox source code directory (same where the configure script is)"
+print_notification "[*]This script was tested on Ubuntu 16.04.1 LTS - Jan 2017"
+print_notification "[*]It comes as it is, it does not do too much error checking etc, if it doesn't work, fix it"
+print_notification "[*] !!! MAKE SURE YOU HAVE FIXED THE VARIABLES in the header of this script before proceeding (usrname, directories, etc)!!!"
+
 
 if [ -d $SOURCESDIR ]; then
         cd $SOURCESDIR
 else
-    _echo "[ERROR]Did you changed the variables (see above)? SOURCEDIR does not exist. Aborting"
+    print_notification "[ERROR]Did you changed the variables (see above)? SOURCEDIR does not exist. Aborting"
     exit 1
 fi
 
 if [ ! -f configure ] || [ ! -f Maintenance.kmk ]; then
-    _echo "[ERROR]You are in the wrong directory. Aborting..."
+    print_notification "[ERROR]You are in the wrong directory. Aborting..."
     exit 1
 fi
 
@@ -259,17 +258,17 @@ fi
     source $SOURCESDIR/env.sh
 
 
-    _echo "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
+    print_notification "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
     kmk >&3
 
 
 
-    _echo "[*] Compiling the org. kernel modules"
+    print_notification "[*] Compiling the org. kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make >&3
 
 
-    _echo "[*] Fixing access rights and cleaning up"
+    print_notification "[*] Fixing access rights and cleaning up"
     cd $SOURCESDIR
     source ./env.sh
     kmk clean
@@ -277,7 +276,7 @@ fi
     sudo chown -R $USER:$(id -gn) .*
 
 
-    _echo "[*]Renaming files and logging to $logfile"
+    print_notification "[*]Renaming files and logging to $logfile"
 
     # Rename files and folders
     rename_files_and_dirs VirtualBox $VirtualBox
@@ -288,7 +287,7 @@ fi
     rename_files_and_dirs oracle $oracle
 
 
-    _echo "[*]Starting string replacment. All 15 rounds are taking approx. 10min on my box, so go and get a coffee"
+    print_notification "[*]Starting string replacment. All 15 rounds are taking approx. 10min on my box, so go and get a coffee"
     replace_strings VirtualBox $VirtualBox
     replace_strings virtualbox $virtualbox
     replace_strings VIRTUALBOX $VIRTUALBOX
@@ -306,17 +305,17 @@ fi
     replace_strings 80ee $PCI80ee
 
 
-    _echo "[*]Replacing BIOS date"
+    print_notification "[*]Replacing BIOS date"
     sed -i 's/06\/23\/99/07\/24\/13/g' $SOURCESDIR/src/VXox/Devices/PC/BIOS/orgs.asm
 
 
-    _echo "[*]Configuring source code"
+    print_notification "[*]Configuring source code"
     ./configure --disable-hardening >&3
     source $SOURCESDIR/env.sh
     replace_strings QVXoxLayout QVBoxLayout
 
 
-    _echo "[*]Replacing kmk_md5 tools with our version to fix MAKE's BIOS check"
+    print_notification "[*]Replacing kmk_md5 tools with our version to fix MAKE's BIOS check"
     if [ -e "$SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum" ]; then
         mv $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum.bak
         cat > $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum <<- EOF
@@ -327,42 +326,42 @@ fi
 EOF
         chmod +x $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum
     else
-        _echo "[ERROR] File \"$SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum\" not found"
+        print_notification "[ERROR] File \"$SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum\" not found"
         exit 1
     fi
 
 
-    _echo "[*]Start compiling source code. That takes a while. Get a coffee..."
+    print_notification "[*]Start compiling source code. That takes a while. Get a coffee..."
     kmk >&3
 
 
-    _echo "[*]Patching BIOS date in autom. generated files"
-    _echo "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c"
+    print_notification "[*]Patching BIOS date in autom. generated files"
+    print_notification "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c
     sed -i 's/0x30\, 0x36\, 0x2f\, 0x32\, 0x33\, 0x2f\, 0x39\, 0x39/0x30\, 0x37\, 0x2f\, 0x32\, 0x34\, 0x2f\, 0x31\, 0x32/g' out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c >&3
 
-    _echo "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c"
+    print_notification "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c
     sed -i 's/0x30\, 0x36\, 0x2f\, 0x32\, 0x33\, 0x2f\, 0x39\, 0x39/0x30\, 0x37\, 0x2f\, 0x32\, 0x34\, 0x2f\, 0x31\, 0x32/g' out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c >&3
 
-    _echo "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c"
+    print_notification "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c
     sed -i 's/0x30\, 0x36\, 0x2f\, 0x32\, 0x33\, 0x2f\, 0x39\, 0x39/0x30\, 0x37\, 0x2f\, 0x32\, 0x34\, 0x2f\, 0x31\, 0x32/g' out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c >&3
 
-    _echo "[*] Compiling BIOS files again."
+    print_notification "[*] Compiling BIOS files again."
     kmk >&3
 
 
-    _echo "[*] Compiling kernel modules"
+    print_notification "[*] Compiling kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make
 
 
-    _echo "[*] Installing kernel modules"
+    print_notification "[*] Installing kernel modules"
     sudo make install
 
 
-_echo "[*]Compiling source code is done."
+print_notification "[*]Compiling source code is done."
 
 
 # -------- Installing Virtual Box ---------
@@ -372,23 +371,23 @@ cd $SOURCESDIR/out/linux.amd64/release/bin
 
 # Take care of kernel modules
 if [ "$(lsmod | grep vxox)" ]; then
-    _echo "[*] vxox kernel modules already loaded. Unloading them..."
+    print_notification "[*] vxox kernel modules already loaded. Unloading them..."
     sudo rmmod vxoxpci
     sudo rmmod vxoxnetflt
     sudo rmmod vxoxnetadp
     sudo rmmod vxoxdrv
 fi
 
-_echo "[*] Loading vxox kernel modules"
+print_notification "[*] Loading vxox kernel modules"
 sudo modprobe vxoxdrv
 sudo modprobe vxoxnetflt
 sudo modprobe vxoxnetadp
 sudo modprobe vxoxpci
 
-_echo "[*] Following modules loaded:"
+print_notification "[*] Following modules loaded:"
 lsmod | grep vxox
 
-    _echo "[*] Adding modules to /etc/modules"
+    print_notification "[*] Adding modules to /etc/modules"
     echo 'vxoxdrv'    | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxpci'    | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxnetadp' | sudo tee --append /etc/modules > /dev/null
@@ -398,15 +397,15 @@ lsmod | grep vxox
 # Copying files to usr dir
 
     if [ -e "/usr/local/virtualbox" ]; then
-        _echo "Deleting old /usr/local/virtualbox folder"
+        print_notification "Deleting old /usr/local/virtualbox folder"
         sudo rm -rf /usr/local/virtualbox
     fi
     sudo mkdir /usr/local/virtualbox
-    _echo "Copying binaries to /usr/local/virtualbox"
+    print_notification "Copying binaries to /usr/local/virtualbox"
     sudo cp -prf $SOURCESDIR/out/linux.amd64/release/bin/*    /usr/local/virtualbox/
-    _echo "Copying shared libraries to /usr/lib/"
+    print_notification "Copying shared libraries to /usr/lib/"
     sudo cp -prf $SOURCESDIR/out/linux.amd64/release/bin/*.so /usr/lib/
-    _echo "Creating some symlinks to e.g. XirtualXox to VirtualBox"
+    print_notification "Creating some symlinks to e.g. XirtualXox to VirtualBox"
     if [ ! -e "/usr/local/bin/VirtualBox" ]; then sudo ln -s /usr/local/virtualbox/XirtualXox  /usr/local/bin/VirtualBox; fi
     if [ ! -e "/usr/local/bin/VBoxSVC"    ]; then sudo ln -s /usr/local/virtualbox/VXoxSVC     /usr/local/bin/VBoxSVC;    fi
     if [ ! -e "/usr/local/bin/VBoxManage" ]; then sudo ln -s /usr/local/virtualbox/VXoxManage  /usr/local/bin/VBoxManage; fi
@@ -418,7 +417,7 @@ lsmod | grep vxox
         mkdir /etc/udev/rules.d/40-permissions.rules
     fi
 
-    _echo "[*]Adding devices in /etc/udev/rules.d/40-permissions.rules"
+    print_notification "[*]Adding devices in /etc/udev/rules.d/40-permissions.rules"
     echo 'KERNEL=="vxoxdrv",                        GROUP="vboxusers", MODE="0660"' \
         | sudo tee --append /etc/udev/rules.d/40-permissions.rules > /dev/null
     echo 'KERNEL=="vxoxdrv",                        GROUP="vboxusers", MODE="0660"' \
