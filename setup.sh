@@ -613,10 +613,10 @@ print_status "${YELLOW}Grabbing other tools${NC}"
 install_packages libboost-all-dev
 sudo -H pip install git+https://github.com/buffer/pyv8 &>> $logfile
 print_status "${YELLOW}Installing antivmdetect and tools${NC}"
-git clone https://github.com/benrau87/antivmdetect.git
 ##Folder setup
 dir_check /usr/bin/cd-drive
 ##Antivm download
+cp $gitdir/lib/Ninite* $PWD
 git clone https://github.com/benrau87/antivmdetect.git
 git clone https://github.com/benrau87/vboxhardening.git
 error_check 'Antivm tools downloaded'
