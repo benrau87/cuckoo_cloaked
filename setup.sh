@@ -156,6 +156,85 @@ apt-get install -y linux-headers-$(uname -r) &>> $logfile
 install_packages  python   python-dev	python-pip	python-setuptools	python-sqlalchemy	python-virtualenv xfce4 xfce4-goodies vim firefox  make	automake	libdumbnet-dev	libarchive-dev	libcap2-bin	libconfig-dev	libcrypt-ssleay-perl	libelf-dev	libffi-dev	libfuzzy-dev	libgeoip-dev	libjansson-dev	libjpeg-dev	liblwp-useragent-determined-perl	liblzma-dev	libmagic-dev	libpcap-dev	libpcre++-dev	libpq-dev	libssl-dev	libtool	apparmor-utils	apt-listchanges	bison	byacc	clamav	clamav-daemon	clamav-freshclam	dh-autoreconf	elasticsearch	fail2ban	flex	gcc	mongodb-org	suricata	swig	tcpdump	tesseract-ocr	unattended-upgrades	uthash-dev	zlib1g-dev	wkhtmltopdf	xvfb	xfonts-100dpi	libstdc++6:i386	libgcc1:i386	zlib1g:i386	libncurses5:i386	subversion	build-essential	bcc	iasl	xsltproc	uuid-dev	libidl-dev	libsdl1.2-dev	libxcursor-dev	libasound2-dev	libstdc++5	libpulse-dev	libxml2-dev	libxslt1-dev	pyqt5-dev-tools	libqt5opengl5-dev	qtbase5-dev-tools	libcap-dev	libxmu-dev	mesa-common-dev	libglu1-mesa-dev	linux-libc-dev	libcurl4-openssl-dev	libpam0g-dev	libxrandr-dev	libxinerama-dev	makeself	libdevmapper-dev	default-jdk	texlive-latex-base	texlive-latex-extra	texlive-latex-recommended	texlive-fonts-extra	texlive-fonts-recommended	lib32ncurses5	lib32z1	libc6-dev-i386	lib32gcc1	gcc-multilib	lib32stdc++6	g++-multilib	genisoimage	libvpx-dev	qt5-default	qttools5-dev-tools	libqt5x11extras5-dev	python-all-dev
 error_check 'Depos installed'
 
+##Cloaked VirtualBox
+print_status "${YELLOW}Installing VirtualBox${NC}"
+cd /home/$name/Sources/
+print_status "${YELLOW}Waiting for dpkg process to free up...${NC}"
+print_status "${YELLOW}If this takes too long try running ${RED}sudo rm -f /var/lib/dpkg/lock${YELLOW} in another terminal window.${NC}"
+while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+   sleep 1
+done
+cd /home/$name/Sources/
+svn co http://www.virtualbox.org/svn/vbox/trunk vbox
+cd vbox/trunk
+find . -name '*VirtualBox*' -exec bash -c 'mv "$0" "${0/VirtualBox/XirtualXox}"' {} \;
+find . -name '*virtualbox*' -exec bash -c 'mv "$0" "${0/virtualbox/xirtualxox}"' {} \;
+find . -type f -name "*" -exec sed -i 's/VirtualBox/XirtualXox/g' {} +
+find . -type f -name "*" -exec sed -i 's/virtualbox/xirtualxox/g' {} +
+find . -type f -name "*" -exec sed -i 's/VIRTUALBOX/XIRTUALXOX/g' {} +
+find . -type f -name "*" -exec sed -i 's/virtualBox/xirtualXox/g' {} +
+find . -name '*Oracle*' -exec bash -c 'mv "$0" "${0/Oracle/Xracle}"' {} \;
+find . -name '*oracle*' -exec bash -c 'mv "$0" "${0/oracle/xracle}"' {} \;
+find . -type f -name "*" -exec sed -i 's/Oracle/Xracle/g' {} +
+find . -type f -name "*" -exec sed -i 's/oracle/xracle/g' {} +
+find . -type f -name "*" -exec sed -i 's/80EE/80EF/g' {} +
+find . -type f -name "*" -exec sed -i 's/80ee/80ef/g' {} +
+sed -i 's/06\/23\/99/07\/24\/13/g' src/VBox/Devices/PC/BIOS/orgs.asm
+find . -name '*vbox*' -exec bash -c 'mv "$0" "${0/vbox/vxox}"' {} \;
+find . -name '*VBox*' -exec bash -c 'mv "$0" "${0/VBox/VXox}"' {} \;
+find . -type f -name "*" -exec sed -i 's/vbox/vxox/g' {} +
+find . -type f -name "*" -exec sed -i 's/VBox/VXox/g' {} +
+find . -type f -name "*" -exec sed -i 's/VBOX/VXOX/g' {} +
+find . -type f -name "*" -exec sed -i 's/Vbox/Vxox/g' {} +
+find . -type f -name "*" -exec sed -i 's/innotek/xnnotek/g' {} +
+find . -type f -name "*" -exec sed -i 's/InnoTek/XnnoTek/g' {} +
+find . -type f -name "*" -exec sed -i 's/INNOTEK/XNNOTEK/g' {} +
+./configure --disable-hardening
+source ./env.sh
+find . -type f -name "*" -exec sed -i 's/QVXoxLayout/QVBoxLayout/g' {} +
+rm kBuild/bin/linux.amd64/kmk_md5sum
+sed -ie "s/talos/$name/g" $gitdir/lib/kmk_md5sum
+cp $gitdir/lib/kmk_md5sum kBuild/bin/linux.amd64/
+chmod +x kBuild/bin/linux.amd64/kmk_md5sum
+kmk
+grep -Rn '0x30, 0x36, 0x2f, 0x32, 0x33, 0x2f, 0x39, 0x39'
+kmk
+cd ./out/linux.amd64/release/bin/src
+make
+sudo rm /lib/modules/4.4.0-53-generic/misc/vxox* 
+sudo make install
+cd ..  /home/$name/Sources/vbox/trunk/out/linux.amd64/release/bin
+rm -rf /usr/local/virtualbox       # if existing
+mkdir /usr/local/virtualbox
+cp -prf * /usr/local/virtualbox/
+rm /usr/lib/VXox*
+cp -prf *.so /usr/lib/
+ln -s /usr/local/virtualbox/XirtualXox /usr/local/bin/VirtualBox
+ln -s /usr/local/virtualbox/VBoxSVC    /usr/local/bin/VBoxSVC
+ln -s /usr/local/virtualbox/VXoxManage  /usr/local/bin/VBoxManage
+modprobe vboxdrv
+modprobe vxoxnetflt
+modprobe vxoxnetadp
+modprobe vxoxpci
+lsmod | grep vxox
+echo "vxoxdrv"  | sudo tee -a /etc/modules
+echo "vxoxpci"  | sudo tee -a /etc/modules
+echo "vxoxnetadp"  | sudo tee -a /etc/modules
+echo "vxoxnetflt"  | sudo tee -a /etc/modules
+groupadd vboxusers
+usermod -G vboxusers -a $name
+chmod 660 /dev/vxox*
+chgrp vboxusers /dev/vxox*
+VBoxManage hostonlyif create 
+echo "auto vxoxnet0"
+echo "iface vxoxnet0 inet static" | sudo tee -a /etc/network/interfaces
+echo "address         10.1.1.254" | sudo tee -a /etc/network/interfaces
+echo "netmask         255.255.255.0" | sudo tee -a /etc/network/interfaces
+echo "network         10.1.1.0" | sudo tee -a /etc/network/interfaces
+echo "broadcast       10.1.1.255" | sudo tee -a /etc/network/interfaces
+error_check 'Virtualbox installed and setup for Cuckoo'
+
+##Cuckoo
 print_status "${YELLOW}Downloading and installing Cuckoo and Python dependencies${NC}"
 pip install -U pip setuptools &>> $logfile
 pip install -U pip flex &>> $logfile
@@ -347,83 +426,7 @@ error_check 'MySQL secure installation and cuckoo database/user creation'
 replace "connection =" "connection = mysql://cuckoo:$cuckoo_mysql_pass@localhost/cuckoo" -- /home/$name/conf/cuckoo.conf &>> $logfile
 error_check 'Configuration files modified'
 
-##Cloaked VirtualBox
-print_status "${YELLOW}Installing VirtualBox${NC}"
-cd /home/$name/Sources/
-print_status "${YELLOW}Waiting for dpkg process to free up...${NC}"
-print_status "${YELLOW}If this takes too long try running ${RED}sudo rm -f /var/lib/dpkg/lock${YELLOW} in another terminal window.${NC}"
-while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
-   sleep 1
-done
-cd /home/$name/Sources/
-svn co http://www.virtualbox.org/svn/vbox/trunk vbox
-cd vbox/trunk
-find . -name '*VirtualBox*' -exec bash -c 'mv "$0" "${0/VirtualBox/XirtualXox}"' {} \;
-find . -name '*virtualbox*' -exec bash -c 'mv "$0" "${0/virtualbox/xirtualxox}"' {} \;
-find . -type f -name "*" -exec sed -i 's/VirtualBox/XirtualXox/g' {} +
-find . -type f -name "*" -exec sed -i 's/virtualbox/xirtualxox/g' {} +
-find . -type f -name "*" -exec sed -i 's/VIRTUALBOX/XIRTUALXOX/g' {} +
-find . -type f -name "*" -exec sed -i 's/virtualBox/xirtualXox/g' {} +
-find . -name '*Oracle*' -exec bash -c 'mv "$0" "${0/Oracle/Xracle}"' {} \;
-find . -name '*oracle*' -exec bash -c 'mv "$0" "${0/oracle/xracle}"' {} \;
-find . -type f -name "*" -exec sed -i 's/Oracle/Xracle/g' {} +
-find . -type f -name "*" -exec sed -i 's/oracle/xracle/g' {} +
-find . -type f -name "*" -exec sed -i 's/80EE/80EF/g' {} +
-find . -type f -name "*" -exec sed -i 's/80ee/80ef/g' {} +
-sed -i 's/06\/23\/99/07\/24\/13/g' src/VBox/Devices/PC/BIOS/orgs.asm
-find . -name '*vbox*' -exec bash -c 'mv "$0" "${0/vbox/vxox}"' {} \;
-find . -name '*VBox*' -exec bash -c 'mv "$0" "${0/VBox/VXox}"' {} \;
-find . -type f -name "*" -exec sed -i 's/vbox/vxox/g' {} +
-find . -type f -name "*" -exec sed -i 's/VBox/VXox/g' {} +
-find . -type f -name "*" -exec sed -i 's/VBOX/VXOX/g' {} +
-find . -type f -name "*" -exec sed -i 's/Vbox/Vxox/g' {} +
-find . -type f -name "*" -exec sed -i 's/innotek/xnnotek/g' {} +
-find . -type f -name "*" -exec sed -i 's/InnoTek/XnnoTek/g' {} +
-find . -type f -name "*" -exec sed -i 's/INNOTEK/XNNOTEK/g' {} +
-./configure --disable-hardening
-source ./env.sh
-find . -type f -name "*" -exec sed -i 's/QVXoxLayout/QVBoxLayout/g' {} +
-rm kBuild/bin/linux.amd64/kmk_md5sum
-sed -ie "s/talos/$name/g" $gitdir/lib/kmk_md5sum
-cp $gitdir/lib/kmk_md5sum kBuild/bin/linux.amd64/
-chmod +x kBuild/bin/linux.amd64/kmk_md5sum
-kmk
-grep -Rn '0x30, 0x36, 0x2f, 0x32, 0x33, 0x2f, 0x39, 0x39'
-kmk
-cd ./out/linux.amd64/release/bin/src
-make
-sudo rm /lib/modules/4.4.0-53-generic/misc/vxox* 
-sudo make install
-cd ..  /home/$name/Sources/vbox/trunk/out/linux.amd64/release/bin
-rm -rf /usr/local/virtualbox       # if existing
-mkdir /usr/local/virtualbox
-cp -prf * /usr/local/virtualbox/
-rm /usr/lib/VXox*
-cp -prf *.so /usr/lib/
-ln -s /usr/local/virtualbox/XirtualXox /usr/local/bin/VirtualBox
-ln -s /usr/local/virtualbox/VBoxSVC    /usr/local/bin/VBoxSVC
-ln -s /usr/local/virtualbox/VXoxManage  /usr/local/bin/VBoxManage
-modprobe vboxdrv
-modprobe vxoxnetflt
-modprobe vxoxnetadp
-modprobe vxoxpci
-lsmod | grep vxox
-echo "vxoxdrv"  | sudo tee -a /etc/modules
-echo "vxoxpci"  | sudo tee -a /etc/modules
-echo "vxoxnetadp"  | sudo tee -a /etc/modules
-echo "vxoxnetflt"  | sudo tee -a /etc/modules
-groupadd vboxusers
-usermod -G vboxusers -a $name
-chmod 660 /dev/vxox*
-chgrp vboxusers /dev/vxox*
-VBoxManage hostonlyif create 
-echo "auto vxoxnet0"
-echo "iface vxoxnet0 inet static" | sudo tee -a /etc/network/interfaces
-echo "address         10.1.1.254" | sudo tee -a /etc/network/interfaces
-echo "netmask         255.255.255.0" | sudo tee -a /etc/network/interfaces
-echo "network         10.1.1.0" | sudo tee -a /etc/network/interfaces
-echo "broadcast       10.1.1.255" | sudo tee -a /etc/network/interfaces
-error_check 'Virtualbox installed and setup for Cuckoo'
+
 
 ##Other tools
 cd /home/$name/tools/
