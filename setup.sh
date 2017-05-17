@@ -645,6 +645,7 @@ git clone https://github.com/benrau87/antivmdetect.git
 dir_check /usr/bin/cd-drive
 ##Antivm download
 git clone https://github.com/benrau87/antivmdetect.git
+git clone https://github.com/benrau87/vboxhardening.git
 error_check 'Antivm tools downloaded'
 
 ##Holding pattern for dpkg...
