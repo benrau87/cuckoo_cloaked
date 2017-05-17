@@ -191,6 +191,8 @@ INNOTEK=XNNOTEK
 PCI80EE=80EF
 PCI80ee=80ef
 
+# Logging some stuff of the installation to...
+vlogfile="$(basename -s ".sh" $0).out"
 
 me="$(basename $0)"
 count=0
@@ -200,7 +202,7 @@ function rename_files_and_dirs {
     a=0
     false
     while [ $? -ne 0 ]; do a=`expr $a + 1`;
-        find . -name "*$1*" ! -name $me ! -name $logfile -exec bash -c "mv \"\$0\" \"\${0/$1/$2}\"" {} \;
+        find . -name "*$1*" ! -name $me ! -name $vlogfile -exec bash -c "mv \"\$0\" \"\${0/$1/$2}\"" {} \;
     done;
 }
 
@@ -208,7 +210,7 @@ function replace_strings {
     count=`expr $count + 1`
     print_notification -n "$count/15 "
     print_notification "[*]Replacing string \"$1\" with string \"$2\" in all files. Be patient this takes a while (~35sec on my box)..."
-    find . -type f ! -name $me ! -name $logfile -exec sed -i "s/$1/$2/g" {} +
+    find . -type f ! -name $me ! -name $vlogfile -exec sed -i "s/$1/$2/g" {} +
 }
 
 print_notification "[*]This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
@@ -250,8 +252,7 @@ fi
     sudo chown -R $USER:$(id -gn) .*
 
 
-    print_notification "[*]Renaming files and logging to $logfile"
-
+    print_notification "[*]Renaming files"
     # Rename files and folders
     rename_files_and_dirs VirtualBox $VirtualBox
     rename_files_and_dirs virtualbox $virtualbox
