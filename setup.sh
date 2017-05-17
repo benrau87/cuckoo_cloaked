@@ -176,7 +176,7 @@ done
 cd /home/$name/sources/
 svn co http://www.virtualbox.org/svn/vbox vbox
 # Directories and filenames
-SOURCESDIR=/home/cuckoo/sources/vbox/trunk                 # Dir where the vbox source code is
+SOURCESDIR=/home/$name/sources/vbox/trunk                 # Dir where the vbox source code is
 KMKTOOLSSUBDIR=kBuild/bin/linux.amd64                   # where we find the kmk tools e.g. kmk_md5sum
 MD5SUMOUT=$SOURCESDIR/kmk_md5.out                   # log md5sum ops to this file
 VBOXMANAGE=$SOURCESDIR/out/linux.amd64/release/bin/VXoxManage       # location and name of VBoxManage binary (after renamed)
@@ -197,17 +197,6 @@ INNOTEK=XNNOTEK
 PCI80EE=80EF
 PCI80ee=80ef
 
-# Logging some stuff of the installation to...
-logfile="$(basename -s ".sh" $0).out"
-
-# create special _echo function for output
-exec 3>&1
-_echo () {
-    echo "$@" >&3
-}
-
-# all other stdout and stderr go to /dev/null
-exec &> ./$logfile
 
 me="$(basename $0)"
 count=0
@@ -228,16 +217,7 @@ function replace_strings {
     find . -type f ! -name $me ! -name $logfile -exec sed -i "s/$1/$2/g" {} +
 }
 
-
-# ----------- Main ------------
-
-print_notification "[*] !!! ---- READ THIS BEFORE PROCEEDING ---- !!!"
 print_notification "[*]This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
-print_notification "[*]Run this script as the user who is supposed to use the VirtualBox app later"
-print_notification "[*]Make sure you are in the vbox source code directory (same where the configure script is)"
-print_notification "[*]This script was tested on Ubuntu 16.04.1 LTS - Jan 2017"
-print_notification "[*]It comes as it is, it does not do too much error checking etc, if it doesn't work, fix it"
-print_notification "[*] !!! MAKE SURE YOU HAVE FIXED THE VARIABLES in the header of this script before proceeding (usrname, directories, etc)!!!"
 
 
 if [ -d $SOURCESDIR ]; then
@@ -254,18 +234,18 @@ fi
 
 
     _echo "[*]Start configuring the source code."
-    ./configure --disable-hardening >&3
+    ./configure --disable-hardening 
     source $SOURCESDIR/env.sh
 
 
     print_notification "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
-    kmk >&3
+    kmk 
 
 
 
     print_notification "[*] Compiling the org. kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
-    make >&3
+    make 
 
 
     print_notification "[*] Fixing access rights and cleaning up"
@@ -310,7 +290,7 @@ fi
 
 
     print_notification "[*]Configuring source code"
-    ./configure --disable-hardening >&3
+    ./configure --disable-hardening 
     source $SOURCESDIR/env.sh
     replace_strings QVXoxLayout QVBoxLayout
 
