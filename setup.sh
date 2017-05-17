@@ -103,7 +103,7 @@ sed -i 's/interface = ens33/interface = "$interface"/g' $gitdir/conf/routing.con
 cp $gitdir/conf/* /home/$name/conf
 cp $gitdir/lib/40-permissions.rules /etc/udev/rules.d/40-permissions.rules
 cp $gitdir/supporting_scripts/firstrun.sh /home/$name/
-cp $gitdir/lib/yara/*.yar /home/name/
+cp $gitdir/lib/yara/*.yar /home/$name/
 chmod +x  $gitdir/supporting_scripts/rooter.sh
 cp $gitdir/supporting_scripts/rooter.sh ~/
 cp $gitdir/supporting_scripts/update_signatures.sh ~/
