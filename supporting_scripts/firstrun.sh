@@ -2,8 +2,8 @@
 cuckoo &
 sleep 20
 cuckoo community
-cp clamavrules.yar ~/.cuckoo/yara/binaries/
-cp clamavrules2.yar ~/.cuckoo/yara/binaries/
+mv clamavrules.yar ~/.cuckoo/yara/binaries/
+mv clamavrules2.yar ~/.cuckoo/yara/binaries/
 cd ~/.cuckoo/yara/
 git clone https://github.com/yara-rules/rules.git 
 cp rules/**/*.yar ~/.cuckoo/yara/binaries/
