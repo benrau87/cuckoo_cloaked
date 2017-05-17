@@ -73,6 +73,7 @@ fi
 
 }
 ########################################
+cd ..
 ##BEGIN MAIN SCRIPT##
 #Pre checks: These are a couple of basic sanity checks the script does before proceeding.
 ##Depos add
@@ -88,7 +89,7 @@ echo -e "${YELLOW}Please type in a MySQL root password${NC}"
 read root_mysql_pass
 echo -e "${YELLOW}Please type in a MySQL cuckoo password${NC}"
 read cuckoo_mysql_pass
-
+echo
 for iface in $(ifconfig | cut -d ' ' -f1| tr '\n' ' ')
 do 
   addr=$(ip -o -4 addr list $iface | awk '{print $4}' | cut -d/ -f1)
