@@ -89,6 +89,7 @@ read root_mysql_pass
 echo -e "${YELLOW}Please type in a MySQL cuckoo password${NC}"
 read cuckoo_mysql_pass
 echo
+echo -e "${YELLOW}Active interfaces${NC}"
 for iface in $(ifconfig | cut -d ' ' -f1| tr '\n' ' ')
 do 
   addr=$(ip -o -4 addr list $iface | awk '{print $4}' | cut -d/ -f1)
