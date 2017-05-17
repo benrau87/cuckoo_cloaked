@@ -374,6 +374,7 @@ lsmod | grep vxox
         print_notification "Deleting old /usr/local/virtualbox folder"
         sudo rm -rf /usr/local/virtualbox
     fi
+    
     sudo mkdir /usr/local/virtualbox
     print_notification "Copying binaries to /usr/local/virtualbox"
     sudo cp -prf $SOURCESDIR/out/linux.amd64/release/bin/*    /usr/local/virtualbox/
@@ -398,7 +399,7 @@ lsmod | grep vxox
         | sudo tee --append /etc/udev/rules.d/40-permissions.rules > /dev/null
     echo 'KERNEL=="vxoxdrvu",                       GROUP="vboxusers", MODE="0660"' \
         | sudo tee --append /etc/udev/rules.d/40-permissions.rules > /dev/null
-fi
+
 
 groupadd vboxusers
 usermod -G vboxusers -a $name
