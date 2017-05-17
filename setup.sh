@@ -166,15 +166,9 @@ install_packages  python   python-dev	python-pip	python-setuptools	python-sqlalc
 error_check 'Depos installed'
 
 ##Cloaked VirtualBox
-print_status "${YELLOW}Installing VirtualBox${NC}"
-cd /home/$name/Sources/
-print_status "${YELLOW}Waiting for dpkg process to free up...${NC}"
-print_status "${YELLOW}If this takes too long try running ${RED}sudo rm -f /var/lib/dpkg/lock${YELLOW} in another terminal window.${NC}"
-while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
-   sleep 1
-done
+print_status "${YELLOW}Installing VirtualBox...this will take about 10 minutes.${NC}"/
 cd /home/$name/sources/
-svn co http://www.virtualbox.org/svn/vbox vbox
+svn co http://www.virtualbox.org/svn/vbox vbox  &>> $logfile
 # Directories and filenames
 SOURCESDIR=/home/$name/sources/vbox/trunk                 # Dir where the vbox source code is
 KMKTOOLSSUBDIR=kBuild/bin/linux.amd64                   # where we find the kmk tools e.g. kmk_md5sum
