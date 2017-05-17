@@ -174,7 +174,7 @@ while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
 done
 cd /home/$name/Sources/
 svn co http://www.virtualbox.org/svn/vbox vbox
-cd vbox/
+cd vbox/trunk/
 find . -name '*VirtualBox*' -exec bash -c 'mv "$0" "${0/VirtualBox/XirtualXox}"' {} \;
 find . -name '*virtualbox*' -exec bash -c 'mv "$0" "${0/virtualbox/xirtualxox}"' {} \;
 find . -type f -name "*" -exec sed -i 's/VirtualBox/XirtualXox/g' {} +
@@ -187,7 +187,7 @@ find . -type f -name "*" -exec sed -i 's/Oracle/Xracle/g' {} +
 find . -type f -name "*" -exec sed -i 's/oracle/xracle/g' {} +
 find . -type f -name "*" -exec sed -i 's/80EE/80EF/g' {} +
 find . -type f -name "*" -exec sed -i 's/80ee/80ef/g' {} +
-sed -i 's/06\/23\/99/07\/24\/13/g' src/VBox/Devices/PC/BIOS/orgs.asm
+sed -i 's/06\/23\/99/07\/24\/13/g' src/VXox/Devices/PC/BIOS/orgs.asm
 find . -name '*vbox*' -exec bash -c 'mv "$0" "${0/vbox/vxox}"' {} \;
 find . -name '*VBox*' -exec bash -c 'mv "$0" "${0/VBox/VXox}"' {} \;
 find . -type f -name "*" -exec sed -i 's/vbox/vxox/g' {} +
