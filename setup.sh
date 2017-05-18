@@ -193,8 +193,8 @@ INNOTEK=XNNOTEK
 PCI80EE=80EF
 PCI80ee=80ef
 
-vlogfile="$(basename -s $logfile $0).out"
-me="$(basename $0)"
+#vlogfile="$(basename -s $logfile $0).out"
+#me="$(basename $0)"
 count=0
 # Rename files and folders arg1=string in filename to search for, arg2=string to rename filename to
 function rename_files_and_dirs {
@@ -202,7 +202,7 @@ function rename_files_and_dirs {
     a=0
     false
     while [ $? -ne 0 ]; do a=`expr $a + 1`;
-        find . -name "*$1*" ! -name $me ! -name $vlogfile -exec bash -c "mv \"\$0\" \"\${0/$1/$2}\"" {} \;
+        find . -name "*$1*" -exec bash -c "mv \"\$0\" \"\${0/$1/$2}\"" {} \;
     done;
 }
 
@@ -210,7 +210,7 @@ function replace_strings {
     count=`expr $count + 1`
     print_notification -n "$count/15 "
     print_notification "Replacing string \"$1\" with string \"$2\" in all files. Be patient this takes a while (~35sec on my box)..."
-    find . -type f ! -name $me ! -name $vlogfile -exec sed -i "s/$1/$2/g" {} +
+    find . -type f  -exec sed -i "s/$1/$2/g" {} +
 }
 
 print_notification "Patching the vbox souce code"
