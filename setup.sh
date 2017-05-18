@@ -193,11 +193,13 @@ PCI80EE=80EF
 PCI80ee=80ef
 
 # Logging some stuff of the installation to...
+print_notification "Setting logs locations"
 vlogfile="$(basename -s ".sh" $0).out"
 exec &> ./$vlogfile
 
 me="$(basename $0)"
 count=0
+error_check 'Log source set'
 # Rename files and folders arg1=string in filename to search for, arg2=string to rename filename to
 function rename_files_and_dirs {
     print_notification "[*]Replacing string \"$1\" to \"$2\" in all filenames"
