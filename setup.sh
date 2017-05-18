@@ -168,7 +168,7 @@ error_check 'Depos installed'
 ##Cloaked VirtualBox
 print_status "${YELLOW}Installing VirtualBox...this will take about 10-20 minutes.${NC}"
 cd /home/$name/sources/
-svn co http://www.virtualbox.org/svn/vbox vbox  &>> $logfile
+svn co http://www.virtualbox.org/svn/vbox vbox  
 # Directories and filenames
 SOURCESDIR=/home/$name/sources/vbox/trunk                 # Dir where the vbox source code is
 KMKTOOLSSUBDIR=kBuild/bin/linux.amd64                   # where we find the kmk tools e.g. kmk_md5sum
