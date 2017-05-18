@@ -8,10 +8,10 @@ ON=$(ifconfig -a | grep -cs 'vvoxnet0')
 if [[ $ON == 1 ]]
 then
   echo "Host only interface is up"
-  VBoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
+  VVoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
 else
-  VBoxManage hostonlyif create vvoxnet0
-  VBoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
+  VVoxManage hostonlyif create vvoxnet0
+  VVoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
 fi
 
 xterm -hold -e cuckoo &
