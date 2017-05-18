@@ -171,7 +171,7 @@ cd /home/$name/sources/
 svn co http://www.virtualbox.org/svn/vbox/trunk vbox
 error_check 'Virtualbox source checked out'
 # Directories and filenames
-SOURCESDIR=/home/$name/sources/vbox/trunk                 # Dir where the vbox source code is
+SOURCESDIR=/home/$name/sources/vbox/                  # Dir where the vbox source code is
 KMKTOOLSSUBDIR=kBuild/bin/linux.amd64                   # where we find the kmk tools e.g. kmk_md5sum
 MD5SUMOUT=$SOURCESDIR/kmk_md5.out                   # log md5sum ops to this file
 VBOXMANAGE=$SOURCESDIR/out/linux.amd64/release/bin/VXoxManage       # location and name of VBoxManage binary (after renamed)
