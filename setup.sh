@@ -228,23 +228,22 @@ if [ ! -f configure ] || [ ! -f Maintenance.kmk ]; then
     exit 1
 fi
 
-
-   print_notification "[*]Starting configuration of the source code."
+print_notification "[*]Starting configuration of the source code."
     ./configure --disable-hardening  &>> $logfile
     source $SOURCESDIR/env.sh  &>> $logfile
 error_check 'Configuration complete'
 
-    print_notification "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
+print_notification "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
     kmk  &>> $logfile
 error_check 'Source code compiled'
 
 
-    print_notification "[*] Compiling the org. kernel modules"
+print_notification "[*] Compiling the org. kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make  &>> $logfile
 error_check 'Kernel compiled'
 
-    print_notification "[*] Fixing access rights and cleaning up"
+print_notification "[*] Fixing access rights and cleaning up"
     cd $SOURCESDIR
     source ./env.sh
     kmk clean
