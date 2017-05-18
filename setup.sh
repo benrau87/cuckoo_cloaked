@@ -231,7 +231,7 @@ fi
 print_notification "Configuring the source code."
     ./configure --disable-hardening  &>> $logfile
     source $SOURCESDIR/env.sh  &>> $logfile
-error_check 'Configuration complete'
+error_check 'Configuration completed'
 
 print_notification "Compiling the org. source code. That takes a while. Get a coffee..."
     kmk  &>> $logfile
