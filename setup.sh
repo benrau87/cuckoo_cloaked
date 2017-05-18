@@ -166,7 +166,7 @@ install_packages  python   python-dev	python-pip	python-setuptools	python-sqlalc
 error_check 'Depos installed'
 
 ##Cloaked VirtualBox
-print_status "${YELLOW}Installing VirtualBox...this will take about an hour or so depending on your hardware.${NC}"
+print_status "${RED}Installing VirtualBox...this will take about an hour or so depending on your hardware.${NC}"
 cd /home/$name/sources/
 svn co http://www.virtualbox.org/svn/vbox/trunk vbox &>> $logfile
 error_check 'Virtualbox source code checked out'
@@ -212,7 +212,7 @@ function replace_strings {
     find . -type f ! -name $me ! -name $vlogfile -exec sed -i "s/$1/$2/g" {} +
 }
 
-print_notification "This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
+print_notification "Patching the vbox souce code"
 
 
 if [ -d $SOURCESDIR ]; then
@@ -227,12 +227,12 @@ if [ ! -f configure ] || [ ! -f Maintenance.kmk ]; then
     exit 1
 fi
 
-print_notification "[*]Starting configuration of the source code."
+print_notification "Configuring the source code."
     ./configure --disable-hardening  &>> $logfile
     source $SOURCESDIR/env.sh  &>> $logfile
 error_check 'Configuration complete'
 
-print_notification "Start compiling the org. source code. That takes a while. Get a coffee..."
+print_notification "Compiling the org. source code. That takes a while. Get a coffee..."
     kmk  &>> $logfile
 error_check 'Source code compiled'
 
@@ -304,7 +304,7 @@ EOF
     fi
 
 
-    print_notification "Start compiling source code. That takes a while. Get a coffee..."
+    print_notification "Compiling source code. That takes a while. Get a coffee..."
     kmk >&3
 
 
