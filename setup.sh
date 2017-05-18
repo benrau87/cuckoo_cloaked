@@ -168,7 +168,7 @@ error_check 'Depos installed'
 ##Cloaked VirtualBox
 print_status "${YELLOW}Installing VirtualBox...this will take about 5-10 minutes.${NC}"
 cd /home/$name/sources/
-svn co http://www.virtualbox.org/svn/vbox vbox 
+svn co http://www.virtualbox.org/svn/vbox/trunk vbox
 error_check 'Virtualbox source checked out'
 # Directories and filenames
 SOURCESDIR=/home/$name/sources/vbox/trunk                 # Dir where the vbox source code is
