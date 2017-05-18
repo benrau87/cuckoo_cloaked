@@ -194,6 +194,8 @@ PCI80ee=80ef
 
 touch virtualboxlogfile.log
 vlogfile = virtualboxlogfile.log
+me="$(basename $0)"
+count=0
 # Rename files and folders arg1=string in filename to search for, arg2=string to rename filename to
 function rename_files_and_dirs {
     print_notification "[*]Replacing string \"$1\" to \"$2\" in all filenames"
