@@ -193,7 +193,7 @@ PCI80EE=80EF
 PCI80ee=80ef
 
 touch virtualboxlogfile.log
-vlogfile = virtualboxlogfile.log
+vlogfile = "$PWD/virtualboxlogfile.log"
 me="$(basename $0)"
 count=0
 # Rename files and folders arg1=string in filename to search for, arg2=string to rename filename to
