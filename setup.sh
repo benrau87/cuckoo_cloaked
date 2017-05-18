@@ -197,7 +197,7 @@ me="$(basename $0)"
 count=0
 # Rename files and folders arg1=string in filename to search for, arg2=string to rename filename to
 function rename_files_and_dirs {
-    print_notification "[*]Replacing string \"$1\" to \"$2\" in all filenames"
+    print_notification "Replacing string \"$1\" to \"$2\" in all filenames"
     a=0
     false
     while [ $? -ne 0 ]; do a=`expr $a + 1`;
@@ -208,11 +208,11 @@ function rename_files_and_dirs {
 function replace_strings {
     count=`expr $count + 1`
     print_notification -n "$count/15 "
-    print_notification "[*]Replacing string \"$1\" with string \"$2\" in all files. Be patient this takes a while (~35sec on my box)..."
+    print_notification "Replacing string \"$1\" with string \"$2\" in all files. Be patient this takes a while (~35sec on my box)..."
     find . -type f ! -name $me ! -name $vlogfile -exec sed -i "s/$1/$2/g" {} +
 }
 
-print_notification "[*]This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
+print_notification "This scripts is patching the vbox souce code, compiles it and finally installs the VirtualBox application"
 
 
 if [ -d $SOURCESDIR ]; then
@@ -232,17 +232,17 @@ print_notification "[*]Starting configuration of the source code."
     source $SOURCESDIR/env.sh  &>> $logfile
 error_check 'Configuration complete'
 
-print_notification "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
+print_notification "Start compiling the org. source code. That takes a while. Get a coffee..."
     kmk  &>> $logfile
 error_check 'Source code compiled'
 
 
-print_notification "[*] Compiling the org. kernel modules"
+print_notification "Compiling the org. kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make  &>> $logfile
 error_check 'Kernel compiled'
 
-print_notification "[*] Fixing access rights and cleaning up"
+print_notification "Fixing access rights and cleaning up"
     cd $SOURCESDIR
     source ./env.sh
     kmk clean
@@ -250,7 +250,7 @@ print_notification "[*] Fixing access rights and cleaning up"
     sudo chown -R $USER:$(id -gn) .*
 
 
-    print_notification "[*]Renaming files"
+    print_notification "Renaming files"
     # Rename files and folders
     rename_files_and_dirs VirtualBox $VirtualBox
     rename_files_and_dirs virtualbox $virtualbox
@@ -260,7 +260,7 @@ print_notification "[*] Fixing access rights and cleaning up"
     rename_files_and_dirs oracle $oracle
 
 
-    print_notification "[*]Starting string replacment. All 15 rounds are taking approx. 10min on my box, so go and get a coffee"
+    print_notification "Starting string replacment. All 15 rounds are taking approx. 10min on my box, so go and get a coffee"
     replace_strings VirtualBox $VirtualBox
     replace_strings virtualbox $virtualbox
     replace_strings VIRTUALBOX $VIRTUALBOX
@@ -278,17 +278,17 @@ print_notification "[*] Fixing access rights and cleaning up"
     replace_strings 80ee $PCI80ee
 
 
-    print_notification "[*]Replacing BIOS date"
+    print_notification "Replacing BIOS date"
     sed -i 's/06\/23\/99/07\/24\/13/g' $SOURCESDIR/src/VXox/Devices/PC/BIOS/orgs.asm
 
 
-    print_notification "[*]Configuring source code"
+    print_notification "Configuring source code"
     ./configure --disable-hardening 
     source $SOURCESDIR/env.sh
     replace_strings QVXoxLayout QVBoxLayout
 
 
-    print_notification "[*]Replacing kmk_md5 tools with our version to fix MAKE's BIOS check"
+    print_notification "Replacing kmk_md5 tools with our version to fix MAKE's BIOS check"
     if [ -e "$SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum" ]; then
         mv $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum.bak
         cat > $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum <<- EOF
@@ -304,37 +304,37 @@ EOF
     fi
 
 
-    print_notification "[*]Start compiling source code. That takes a while. Get a coffee..."
+    print_notification "Start compiling source code. That takes a while. Get a coffee..."
     kmk >&3
 
 
-    print_notification "[*]Patching BIOS date in autom. generated files"
-    print_notification "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c"
+    print_notification "Patching BIOS date in autom. generated files"
+    print_notification "File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c
     sed -i 's/0x30\, 0x36\, 0x2f\, 0x32\, 0x33\, 0x2f\, 0x39\, 0x39/0x30\, 0x37\, 0x2f\, 0x32\, 0x34\, 0x2f\, 0x31\, 0x32/g' out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c >&3
 
-    print_notification "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c"
+    print_notification "File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c
     sed -i 's/0x30\, 0x36\, 0x2f\, 0x32\, 0x33\, 0x2f\, 0x39\, 0x39/0x30\, 0x37\, 0x2f\, 0x32\, 0x34\, 0x2f\, 0x31\, 0x32/g' out/linux.amd64/release/obj/PcBiosBin/PcBiosBin386.c >&3
 
-    print_notification "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c"
+    print_notification "File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c
     sed -i 's/0x30\, 0x36\, 0x2f\, 0x32\, 0x33\, 0x2f\, 0x39\, 0x39/0x30\, 0x37\, 0x2f\, 0x32\, 0x34\, 0x2f\, 0x31\, 0x32/g' out/linux.amd64/release/obj/PcBiosBin/PcBiosBin8086.c >&3
 
-    print_notification "[*] Compiling BIOS files again."
+    print_notification "Compiling BIOS files again."
     kmk >&3
 
 
-    print_notification "[*] Compiling kernel modules"
+    print_notification "Compiling kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make
 
 
-    print_notification "[*] Installing kernel modules"
+    print_notification "Installing kernel modules"
     sudo make install
 
 
-print_notification "[*]Compiling source code is done."
+print_notification "Compiling source code is done."
 
 
 # -------- Installing Virtual Box ---------
@@ -344,23 +344,23 @@ cd $SOURCESDIR/out/linux.amd64/release/bin
 
 # Take care of kernel modules
 if [ "$(lsmod | grep vxox)" ]; then
-    print_notification "[*] vxox kernel modules already loaded. Unloading them..."
+    print_notification "vxox kernel modules already loaded. Unloading them..."
     sudo rmmod vxoxpci
     sudo rmmod vxoxnetflt
     sudo rmmod vxoxnetadp
     sudo rmmod vxoxdrv
 fi
 
-print_notification "[*] Loading vxox kernel modules"
+print_notification "Loading vxox kernel modules"
 sudo modprobe vxoxdrv
 sudo modprobe vxoxnetflt
 sudo modprobe vxoxnetadp
 sudo modprobe vxoxpci
 
-print_notification "[*] Following modules loaded:"
+print_notification "Following modules loaded:"
 lsmod | grep vxox
 
-    print_notification "[*] Adding modules to /etc/modules"
+    print_notification "Adding modules to /etc/modules"
     echo 'vxoxdrv'    | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxpci'    | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxnetadp' | sudo tee --append /etc/modules > /dev/null
