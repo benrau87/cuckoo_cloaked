@@ -10,8 +10,8 @@ then
   echo "Host only interface is up"
   VVoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
 else
-  VVoxManage hostonlyif create vvoxnet0
-  VVoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
+  VXoxManage hostonlyif create vvoxnet0
+  VXoxManage hostonlyif ipconfig vvoxnet0 --ip 10.1.1.254
 fi
 
 xterm -hold -e cuckoo &
