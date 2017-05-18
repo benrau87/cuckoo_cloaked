@@ -166,10 +166,10 @@ install_packages  python   python-dev	python-pip	python-setuptools	python-sqlalc
 error_check 'Depos installed'
 
 ##Cloaked VirtualBox
-print_status "${YELLOW}Installing VirtualBox...this will take about 5-10 minutes.${NC}"
+print_status "${YELLOW}Installing VirtualBox...this will take about an hour or so depending on your hardware.${NC}"
 cd /home/$name/sources/
-svn co http://www.virtualbox.org/svn/vbox/trunk vbox
-error_check 'Virtualbox source checked out'
+svn co http://www.virtualbox.org/svn/vbox/trunk vbox &>> $logfile
+error_check 'Virtualbox source code checked out'
 # Directories and filenames
 SOURCESDIR=/home/$name/sources/vbox/                  # Dir where the vbox source code is
 KMKTOOLSSUBDIR=kBuild/bin/linux.amd64                   # where we find the kmk tools e.g. kmk_md5sum
@@ -229,20 +229,20 @@ if [ ! -f configure ] || [ ! -f Maintenance.kmk ]; then
 fi
 
 
-   print_notification "[*]Start configuring the source code."
-    ./configure --disable-hardening 
-    source $SOURCESDIR/env.sh
-
+   print_notification "[*]Starting configuration of the source code."
+    ./configure --disable-hardening  &>> $logfile
+    source $SOURCESDIR/env.sh  &>> $logfile
+error_check 'Configuration complete'
 
     print_notification "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
-    kmk 
-
+    kmk  &>> $logfile
+error_check 'Source code compiled'
 
 
     print_notification "[*] Compiling the org. kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
-    make 
-
+    make  &>> $logfile
+error_check 'Kernel compiled'
 
     print_notification "[*] Fixing access rights and cleaning up"
     cd $SOURCESDIR
