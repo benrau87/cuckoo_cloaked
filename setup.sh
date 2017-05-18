@@ -230,7 +230,7 @@ if [ ! -f configure ] || [ ! -f Maintenance.kmk ]; then
 fi
 
 
-    _echo "[*]Start configuring the source code."
+   print_notification "[*]Start configuring the source code."
     ./configure --disable-hardening 
     source $SOURCESDIR/env.sh
 
