@@ -166,7 +166,7 @@ install_packages  python   python-dev	python-pip	python-setuptools	python-sqlalc
 error_check 'Depos installed'
 
 ##Cloaked VirtualBox
-print_status "${YELLOW}Installing VirtualBox...this will take about 10-20 minutes.${NC}"
+print_status "${YELLOW}Installing VirtualBox...this will take about 5-10 minutes.${NC}"
 cd /home/$name/sources/
 svn co http://www.virtualbox.org/svn/vbox vbox 
 error_check 'Virtualbox source checked out'
