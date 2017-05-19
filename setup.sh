@@ -250,6 +250,7 @@ print_notification "Fixing access rights and cleaning up"
     sudo chown -R $USER:$(id -gn) *
     sudo chown -R $USER:$(id -gn) .*
 
+cd /home/$name/sources/vbox
 
     print_notification "Renaming files"
     # Rename files and folders
