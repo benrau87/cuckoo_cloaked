@@ -1,9 +1,9 @@
 #!/bin/bash
 mkdir /home/cuckoo/sources/
 cd /home/cuckoo/sources/
-svn co http://www.virtualbox.org/svn/vbox/trunk vbox
+svn co http://www.virtualbox.org/svn/vbox vbox
 # Directories and filenames
-SOURCESDIR=/home/cuckoo/sources/vbox/              # Dir where the vbox source code is
+SOURCESDIR=/home/cuckoo/sources/vbox/trunk                 # Dir where the vbox source code is
 KMKTOOLSSUBDIR=kBuild/bin/linux.amd64                   # where we find the kmk tools e.g. kmk_md5sum
 MD5SUMOUT=$SOURCESDIR/kmk_md5.out                   # log md5sum ops to this file
 VBOXMANAGE=$SOURCESDIR/out/linux.amd64/release/bin/VXoxManage       # location and name of VBoxManage binary (after renamed)
@@ -81,61 +81,34 @@ if [ ! -f configure ] || [ ! -f Maintenance.kmk ]; then
     exit 1
 fi
 
-if [ "$EUID" -eq 0 ]; then
-    _echo -n "[WARNING]Don't run this script as root. No idea if it works. Should we proceed nevertheless (y/N)?"; read s
-    if [ "$s" != "y" ]; then
-        _echo "ok, nothing done. Aborting...";
-        exit 1
-    fi
-fi
 
 
 # Configuring and compiling the org. source first (this is neccessary to make the script work!)
-_echo -n "[*]Should we start configuring org. source code (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+
     _echo "[*]Start configuring the source code."
     ./configure --disable-hardening >&3
     source $SOURCESDIR/env.sh
-fi
 
-_echo -n "[*]Should we start compiling the org. source code (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+
     _echo "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
     kmk >&3
-fi
 
-_echo -n "[*]Should we start compiling the org. kernel modules (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+
+
     _echo "[*] Compiling the org. kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make >&3
-fi
 
-# Fixing the rights and cleaning up.
-_echo -n "[*]Should we start cleaning up and fixing access rights (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*] Fixing access rights and cleaning up"
     cd $SOURCESDIR
     source ./env.sh
     kmk clean
     sudo chown -R $USER:$(id -gn) *
     sudo chown -R $USER:$(id -gn) .*
-fi
 
-# Renaming Files
-_echo -n "[*]Should we start renaming files (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+
     _echo "[*]Logging to $logfile"
+    _echo "[*]Renaming files"
 
     # Rename files and folders
     rename_files_and_dirs VirtualBox $VirtualBox
@@ -144,13 +117,7 @@ else
     rename_files_and_dirs VBox $VBox
     rename_files_and_dirs Oracle $Oracle
     rename_files_and_dirs oracle $oracle
-fi
 
-# Replacing strings
-_echo -n "[*]Should we start replacing the common suspicious strings (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*]Starting string replacment. All 15 rounds are taking approx. 10min on my box, so go and get a coffee"
     replace_strings VirtualBox $VirtualBox
     replace_strings virtualbox $virtualbox
@@ -167,39 +134,15 @@ else
     replace_strings INNOTEK $INNOTEK
     replace_strings 80EE $PCI80EE
     replace_strings 80ee $PCI80ee
-fi
 
-# replace BIOS date
-_echo -n "[*]Should we start to replace the BIOS date (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*]Replacing BIOS date"
     sed -i 's/06\/23\/99/07\/24\/13/g' $SOURCESDIR/src/VXox/Devices/PC/BIOS/orgs.asm
-fi
 
-# Start configuring the source code
-_echo -n "[*]Should we start configuring the source code (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+    _echo "[*]Compiling source code"
     ./configure --disable-hardening >&3
     source $SOURCESDIR/env.sh
-fi
-
-# fix wrongly renamed QT strings/functions
-_echo -n "[*]Should we start fixing the QT functions and methods (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     replace_strings QVXoxLayout QVBoxLayout
-fi
 
-# fix BIOS MD5sum checks with a fake MD5sum tool
-_echo -n "[*]Should we start fixing the generated BIOS date (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*]Replacing kmk_md5 tools with our version to fix MAKE's BIOS check"
     if [ -e "$SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum" ]; then
         mv $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum $SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum.bak
@@ -214,22 +157,10 @@ EOF
         _echo "[ERROR] File \"$SOURCESDIR/$KMKTOOLSSUBDIR/kmk_md5sum\" not found"
         exit 1
     fi
-fi
 
-# Compile the stuff
-_echo -n "[*]Should we start compiling the patched source code (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*]Start compiling source code. That takes a while. Get a coffee..."
-    kmk >&3
 fi
 
-# Patching BIOS date again (BIOS date gets autom. inserted again from some make file (thx Oracle, grmpf)
-_echo -n "[*]Should we start patching the other BIOS date (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*]Patching BIOS date in autom. generated files"
     _echo "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c"
     sed -i 's/06\.23\.99/07\.24\.13/g' $SOURCESDIR/out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c
@@ -245,34 +176,22 @@ else
 
     _echo "[*] Compiling BIOS files again."
     kmk >&3
-fi
+
 
 # compile kernel modules
-_echo -n "[*]Should we start compiling the kernel modules (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*] Compiling kernel modules"
     cd $SOURCESDIR/out/linux.amd64/release/bin/src/
     make
-fi
 
-# install kernel modules
-_echo -n "[*]Should we start installing kernel modules (y/N)?"; read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+
     _echo "[*] Installing kernel modules"
     sudo make install
-fi
+
 
 _echo "[*]Compiling source code is done."
 
 
 # -------- Installing Virtual Box ---------
-
-_echo -n "[*]Should we start installing VirtualBox on this machine (y/N)?"; read s
-if [ "$s" != "y" ]; then _echo "...exiting. Nothing done."; exit 1; fi
 
 cd $SOURCESDIR/out/linux.amd64/release/bin
 
@@ -294,28 +213,18 @@ sudo modprobe vxoxpci
 _echo "[*] Following modules loaded:"
 lsmod | grep vxox
 
-_echo -n "Should we proceed with configuring autoload of vbox modules via /etc/modules [y/N]"
-read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
     _echo "[*] Adding modules to /etc/modules"
     echo 'vxoxdrv'    | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxpci'    | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxnetadp' | sudo tee --append /etc/modules > /dev/null
     echo 'vxoxnetflt' | sudo tee --append /etc/modules > /dev/null
-fi
 
-# Copying files to usr dir
-_echo -n "Should we proceed with copying files to /usr/local/virtualbox directory [y/N]"
-read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done.";
-else
+
     if [ -e "/usr/local/virtualbox" ]; then
         _echo "Deleting old /usr/local/virtualbox folder"
         sudo rm -rf /usr/local/virtualbox
     fi
+    
     sudo mkdir /usr/local/virtualbox
     _echo "Copying binaries to /usr/local/virtualbox"
     sudo cp -prf $SOURCESDIR/out/linux.amd64/release/bin/*    /usr/local/virtualbox/
@@ -325,17 +234,13 @@ else
     if [ ! -e "/usr/local/bin/VirtualBox" ]; then sudo ln -s /usr/local/virtualbox/XirtualXox  /usr/local/bin/VirtualBox; fi
     if [ ! -e "/usr/local/bin/VBoxSVC"    ]; then sudo ln -s /usr/local/virtualbox/VXoxSVC     /usr/local/bin/VBoxSVC;    fi
     if [ ! -e "/usr/local/bin/VBoxManage" ]; then sudo ln -s /usr/local/virtualbox/VXoxManage  /usr/local/bin/VBoxManage; fi
-fi
 
 
-# Setup usergroup for vbox devices at startup
-_echo -n "Should we proceed setting up the vbox devices in /etc/udev/rules.d/40-permissions.rules [y/N]?"
-read s
-if [ "$s" != "y" ]; then
-    _echo "ok, nothing done."
-else
+
     if [ -e "/etc/udev/rules.d/40-permissions.rules" ]; then
         sudo cp /etc/udev/rules.d/40-permissions.rules /etc/udev/rules.d/40-permissions.rules.vboxinstaller.bak
+        else 
+        touch /etc/udev/rules.d/40-permissions.rules
     fi
 
     _echo "[*]Adding devices in /etc/udev/rules.d/40-permissions.rules"
