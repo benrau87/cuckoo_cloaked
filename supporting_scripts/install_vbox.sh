@@ -159,7 +159,6 @@ EOF
     fi
 
     _echo "[*]Start compiling source code. That takes a while. Get a coffee..."
-fi
 
     _echo "[*]Patching BIOS date in autom. generated files"
     _echo "[*]File: out/linux.amd64/release/obj/PcBiosBin/PcBiosBin286.c"
