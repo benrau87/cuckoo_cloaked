@@ -167,7 +167,7 @@ error_check 'Depos installed'
 
 ##Cloaked VirtualBox
 print_status "${RED}Installing VirtualBox...this will take about an hour or so depending on your hardware.${NC}"
-sed -i 's/cuckoo/"$name"/g' $gitdir/supporting_scripts/install_vbox.sh &>> $logfile
+sed -i 's/cuckoo/$name/g' $gitdir/supporting_scripts/install_vbox.sh &>> $logfile
 bash $gitdir/supporting_scripts/install_vbox.sh
 error_check 'Cloaked virtualbox installed'
 
