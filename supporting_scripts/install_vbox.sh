@@ -1,5 +1,5 @@
 #!/bin/bash
-apt-get install subversion build-essential bcc iasl xsltproc uuid-dev \
+apt-get -y install subversion build-essential bcc iasl xsltproc uuid-dev \
     zlib1g-dev libidl-dev libsdl1.2-dev libxcursor-dev libasound2-dev \
     libstdc++5 libpulse-dev libxml2-dev libxslt1-dev pyqt5-dev-tools \
     libqt5opengl5-dev qtbase5-dev-tools libcap-dev libxmu-dev \
