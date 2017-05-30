@@ -249,5 +249,5 @@ lsmod | grep vxox
         | sudo tee --append /etc/udev/rules.d/40-permissions.rules > /dev/null
     echo 'KERNEL=="vxoxdrvu",                       GROUP="vboxusers", MODE="0660"' \
         | sudo tee --append /etc/udev/rules.d/40-permissions.rules > /dev/null
-fi
+
 
