@@ -1,20 +1,9 @@
 #!/bin/bash
 cd /tmp/
-dpkg --add-architecture i386
-apt-get update
-apt-get -y install gcc g++ bcc iasl xsltproc uuid-dev zlib1g-dev libidl-dev \
-                libsdl1.2-dev libxcursor-dev libasound2-dev libstdc++5 \
-                libhal-dev libpulse-dev libxml2-dev libxslt1-dev \
-                python-dev libqt4-dev qt4-dev-tools libcap-dev \
-                libxmu-dev mesa-common-dev libglu1-mesa-dev \
-                linux-kernel-headers libcurl4-openssl-dev libpam0g-dev \
-                libxrandr-dev libxinerama-dev libqt4-opengl-dev makeself \
-                libdevmapper-dev default-jdk python-central \
-                texlive-latex-base \
-                texlive-latex-extra texlive-latex-recommended \
-                texlive-fonts-extra texlive-fonts-recommended \
-                lib32z1 lib32ncurses5 libc6-dev-i386 lib32gcc1 gcc-multilib \
-                lib32stdc++6 g++-multilib
+apt-get install kbuild -y
+wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
+chmod +x qt-opensource-linux-x64-5.7.0.run
+./qt-opensource-linux-x64-5.7.0.run
 
 
 cd /home/cuckoo/sources/
