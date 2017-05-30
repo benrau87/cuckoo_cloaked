@@ -13,7 +13,7 @@ apt-get -y install gcc g++ bcc iasl xsltproc uuid-dev zlib1g-dev libidl-dev \
                 texlive-latex-base \
                 texlive-latex-extra texlive-latex-recommended \
                 texlive-fonts-extra texlive-fonts-recommended \
-                ia32-libs libc6-dev-i386 lib32gcc1 gcc-multilib \
+                lib32z1 lib32ncurses5 libc6-dev-i386 lib32gcc1 gcc-multilib \
                 lib32stdc++6 g++-multilib
 cd /home/cuckoo/sources/
 svn co http://www.virtualbox.org/svn/vbox vbox
