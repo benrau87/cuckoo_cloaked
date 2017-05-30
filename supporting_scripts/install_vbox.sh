@@ -1,4 +1,5 @@
 #!/bin/bash
+apt-get install kbuild -y
 mkdir /home/cuckoo/sources/
 cd /home/cuckoo/sources/
 svn co http://www.virtualbox.org/svn/vbox vbox
