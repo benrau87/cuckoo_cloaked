@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /tmp/
-tee -a "deb-src http://us.archive.ubuntu.com/ubuntu/ xenial-backports" /etc/apt/sources.list
+tee -a  /etc/apt/sources.list "deb-src http://us.archive.ubuntu.com/ubuntu/ xenial-backports"
 dpkg --add-architecture i386
 apt-get update
 apt-get -y install gcc g++ bcc iasl xsltproc uuid-dev zlib1g-dev libidl-dev \
