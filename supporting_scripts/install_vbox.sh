@@ -1,5 +1,6 @@
 #!/bin/bash
 cd /tmp/
+apt-get update
 apt-get -y install gcc g++ bcc iasl xsltproc uuid-dev zlib1g-dev libidl-dev \
                 libsdl1.2-dev libxcursor-dev libasound2-dev libstdc++5 \
                 libhal-dev libpulse-dev libxml2-dev libxslt1-dev \
