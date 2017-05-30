@@ -99,7 +99,7 @@ fi
 
     _echo "[*]Start configuring the source code."
     ./configure --disable-hardening >&3
-    source $SOURCESDIR/env.sh
+    source $SOURCESDIR/kBuild/env.sh
 
 
     _echo "[*]Start compiling the org. source code. That takes a while. Get a coffee..."
