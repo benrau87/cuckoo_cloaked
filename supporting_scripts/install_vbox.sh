@@ -1,10 +1,4 @@
 #!/bin/bash
-cd /tmp/
-apt-get install kbuild -y
-wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
-chmod +x qt-opensource-linux-x64-5.7.0.run
-./qt-opensource-linux-x64-5.7.0.run
-
 
 cd /home/cuckoo/sources/
 svn co http://www.virtualbox.org/svn/vbox vbox
