@@ -12,8 +12,15 @@ apt-get -y install subversion build-essential bcc iasl xsltproc uuid-dev \
     qttools5-dev-tools libqt5x11extras5-dev libssl-dev python-all-dev \
     git-svn kbuild iasl libpng-dev libsdl-dev yasm qtdeclarative5-dev qml-module-qtquick-controls
 
-qmake -qt=5 --version
+ln -s libX11.so.6    /usr/lib32/libX11.so 
+ln -s libXTrap.so.6  /usr/lib32/libXTrap.so 
+ln -s libXt.so.6     /usr/lib32/libXt.so 
+ln -s libXtst.so.6   /usr/lib32/libXtst.so
+ln -s libXmu.so.6    /usr/lib32/libXmu.so
+ln -s libXext.so.6   /usr/lib32/libXext.so
 ln -s /lib/libgcc_s.so.1 /lib/libgcc_s.so
+
+qmake -qt=5 --version
     
 cd /home/cuckoo/sources/
 svn co http://www.virtualbox.org/svn/vbox/trunk vbox
