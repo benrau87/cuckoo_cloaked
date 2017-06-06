@@ -13,6 +13,7 @@ apt-get -y install subversion build-essential bcc iasl xsltproc uuid-dev \
     git-svn kbuild iasl libpng-dev libsdl-dev yasm qtdeclarative5-dev qml-module-qtquick-controls
 
 qmake -qt=5 --version
+ln -s /lib/libgcc_s.so.1 /lib/libgcc_s.so
     
 cd /home/cuckoo/sources/
 svn co http://www.virtualbox.org/svn/vbox/trunk vbox
