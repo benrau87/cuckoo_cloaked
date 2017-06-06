@@ -10,7 +10,7 @@ apt-get -y install subversion build-essential bcc iasl xsltproc uuid-dev \
     lib32ncurses5 lib32z1 libc6-dev-i386 lib32gcc1 gcc-multilib \
     lib32stdc++6 g++-multilib genisoimage libvpx-dev qt5-default \
     qttools5-dev-tools libqt5x11extras5-dev libssl-dev python-all-dev \
-    git-svn kbuild iasl libpng-dev libsdl-dev yasm qtdeclarative5-dev
+    git-svn kbuild iasl libpng-dev libsdl-dev yasm qtdeclarative5-dev qml-module-qtquick-controls
 
 qmake -qt=5 --version
     
