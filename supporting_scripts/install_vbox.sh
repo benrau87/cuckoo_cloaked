@@ -20,8 +20,11 @@ ln -s libXmu.so.6    /usr/lib32/libXmu.so
 ln -s libXext.so.6   /usr/lib32/libXext.so
 ln -s /lib/libgcc_s.so.1 /lib/libgcc_s.so
 
-qmake -qt=5 --version
-    
+#qmake -qt=5 --version
+wget http://qt.mirror.constant.com/archive/qt/5.5/5.5.1/qt-opensource-linux-x64-5.5.1.run
+chmod 755 qt-opensource-linux-x64-5.5.1.run
+sudo ./qt-opensource-linux-x64-5.5.1.run
+
 cd /home/cuckoo/sources/
 svn co http://www.virtualbox.org/svn/vbox/trunk vbox
 # Directories and filenames
